@@ -26,6 +26,10 @@ function App() {
     );
   }
 
+  function deleteTodoItem(id) {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  }
+
   return (
     <>
       <button className="todo-add-button" onClick={addTodoItem}>
@@ -39,6 +43,14 @@ function App() {
             onClick={() => toggleCompleted(todo.id)}
           >
             {todo.text}
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); //부모로 이벤트 전파 방지
+                deleteTodoItem(todo.id);
+              }}
+            >
+              X
+            </button>
           </li>
         ))}
       </ul>
