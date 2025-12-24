@@ -18,14 +18,28 @@ function App() {
     setTodos((prev) => [...prev, todoItem]);
   }
 
+  function toggleCompleted(id) {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
   return (
     <>
       <button className="todo-add-button" onClick={addTodoItem}>
         +
       </button>
-      <ul>
+      <ul className="todo-wrap">
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.text}</li>
+          <li
+            key={todo.id}
+            className={`todo-item ${todo.completed ? 'completed' : ''}`}
+            onClick={() => toggleCompleted(todo.id)}
+          >
+            {todo.text}
+          </li>
         ))}
       </ul>
     </>
