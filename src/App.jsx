@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import TodoItem from './components/TodoItem';
 import TodoAddButton from './components/TodoAddButton';
+import TodoList from './components/TodoList';
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -22,7 +22,7 @@ function App() {
 
   function addTodoItem() {
     const res = prompt('해야 할 일을 입력해주세요');
-    if (!res) return;
+    if (res === null) return;
     const text = res.trim();
     if (!text) return;
 
@@ -55,17 +55,12 @@ function App() {
     <>
       <TodoAddButton onAdd={addTodoItem} />
 
-      <ul className="todo-wrap">
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            toggleCompleted={toggleCompleted}
-            confirmDelete={confirmDelete}
-            deleteTodoItem={deleteTodoItem}
-          />
-        ))}
-      </ul>
+      <TodoList
+        todos={todos}
+        toggleCompleted={toggleCompleted}
+        confirmDelete={confirmDelete}
+        deleteTodoItem={deleteTodoItem}
+      />
     </>
   );
 }
