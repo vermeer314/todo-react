@@ -1,15 +1,14 @@
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, toggleCompleted, confirmDelete, deleteTodoItem }) {
+function TodoList({ todos, onToggle, onDelete }) {
   return (
     <ul className="todo-wrap">
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
-          toggleCompleted={toggleCompleted}
-          confirmDelete={confirmDelete}
-          deleteTodoItem={deleteTodoItem}
+          toggleCompleted={onToggle}
+          deleteTodoItem={onDelete}
         />
       ))}
     </ul>

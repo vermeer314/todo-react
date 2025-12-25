@@ -3,12 +3,14 @@ import './App.css';
 import TodoAddButton from './components/TodoAddButton';
 import TodoList from './components/TodoList';
 
+const STORAGE_KEY = 'localTodos';
+
 function App() {
   const [todos, setTodos] = useState(() => {
     //todos의 초기 값으로 localStorage에 있는 밸류 할당
     //try catch로 localStorage 값이 깨지는 경우 방지
     try {
-      const saved = localStorage.getItem('localTodos');
+      const saved = localStorage.getItem(STORAGE_KEY);
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -17,7 +19,7 @@ function App() {
 
   useEffect(() => {
     //todos가 바뀔 때 마다 실행될 코드
-    localStorage.setItem('localTodos', JSON.stringify(todos));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
 
   function addTodoItem() {
@@ -47,19 +49,14 @@ function App() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   }
 
-  function confirmDelete() {
-    return confirm('삭제하시겠습니까?');
-  }
-
   return (
     <>
       <TodoAddButton onAdd={addTodoItem} />
 
       <TodoList
         todos={todos}
-        toggleCompleted={toggleCompleted}
-        confirmDelete={confirmDelete}
-        deleteTodoItem={deleteTodoItem}
+        onToggle={toggleCompleted}
+        onDelete={deleteTodoItem}
       />
     </>
   );
