@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import TodoItem from './components/TodoItem';
+import TodoAddButton from './components/TodoAddButton';
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -51,27 +53,17 @@ function App() {
 
   return (
     <>
-      <button className="todo-add-button" onClick={addTodoItem}>
-        +
-      </button>
+      <TodoAddButton onAdd={addTodoItem} />
+
       <ul className="todo-wrap">
         {todos.map((todo) => (
-          <li
+          <TodoItem
             key={todo.id}
-            className={`todo-item ${todo.completed ? 'completed' : ''}`}
-            onClick={() => toggleCompleted(todo.id)}
-          >
-            {todo.text}
-            <button
-              onClick={(e) => {
-                e.stopPropagation(); //부모로 이벤트 전파 방지
-                if (!confirmDelete()) return;
-                deleteTodoItem(todo.id);
-              }}
-            >
-              X
-            </button>
-          </li>
+            todo={todo}
+            toggleCompleted={toggleCompleted}
+            confirmDelete={confirmDelete}
+            deleteTodoItem={deleteTodoItem}
+          />
         ))}
       </ul>
     </>
