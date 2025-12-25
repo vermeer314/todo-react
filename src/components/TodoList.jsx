@@ -7,8 +7,8 @@ function TodoList({ todos, onToggle, onDelete }) {
         <TodoItem
           key={todo.id}
           todo={todo}
-          toggleCompleted={onToggle}
-          deleteTodoItem={onDelete}
+          onToggle={onToggle}
+          onDelete={onDelete}
         />
       ))}
     </ul>
