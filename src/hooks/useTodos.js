@@ -1,0 +1,66 @@
+import { useEffect, useState } from 'react';
+
+const STORAGE_KEY = 'localTodos';
+
+function useTodos() {
+  const [todos, setTodos] = useState(() => {
+    //todos의 초기 값으로 localStorage에 있는 밸류 할당
+    //try catch로 localStorage 값이 깨지는 경우 방지
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    //todos가 바뀔 때 마다 실행될 코드
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  }, [todos]);
+
+  function addTodoItem(value) {
+    const trimmed = value.trim();
+    if (!isValid(trimmed)) return;
+
+    const todoItem = {
+      id: crypto.randomUUID(),
+      text: trimmed,
+      completed: false,
+    };
+
+    setTodos((prev) => [...prev, todoItem]);
+  }
+
+  function deleteTodoItem(id) {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  }
+
+  function editTodoItem(id, editedText) {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, text: editedText.trim() } : todo
+      )
+    );
+  }
+
+  function toggleCompleted(id) {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
+  return { todos, addTodoItem, deleteTodoItem, editTodoItem, toggleCompleted };
+}
+
+function isValid(text) {
+  if (text === null) return false;
+  if (!text.trim()) return false;
+
+  return true;
+}
+
+export default useTodos;
