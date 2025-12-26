@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import TodoAddButton from './components/TodoAddButton';
 import TodoList from './components/TodoList';
+import TodoInput from './components/TodoInput';
 
 const STORAGE_KEY = 'localTodos';
 
@@ -55,21 +55,7 @@ function App() {
 
   return (
     <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault(); //submit 시 새로고침 방지
-          addTodoItem(e.target.todoInput.value);
-          e.target.todoInput.value = '';
-        }}
-      >
-        <input
-          className="todo-add-input"
-          type="text"
-          placeholder="해야할 일을 입력해주세요"
-          name="todoInput"
-        ></input>
-        <button type="submit">+</button>
-      </form>
+      <TodoInput onAdd={addTodoItem} />
 
       <TodoList
         todos={todos}
