@@ -13,6 +13,7 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
+    //수정 중일 경우 input 창에 자동으로 포커스가 가도록
     if (isEditing) inputRef.current?.focus();
   }, [isEditing]);
 
