@@ -11,6 +11,7 @@ function App() {
     //try catch로 localStorage 값이 깨지는 경우 방지
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
+
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -23,11 +24,12 @@ function App() {
   }, [todos]);
 
   function addTodoItem(value) {
-    if (!isValid(value)) return;
+    const trimmed = value.trim();
+    if (!isValid(trimmed)) return;
 
     const todoItem = {
       id: crypto.randomUUID(),
-      text: value.trim(),
+      text: trimmed,
       completed: false,
     };
 
@@ -56,7 +58,7 @@ function App() {
   function editTodoItem(id, editedText) {
     setTodos((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, text: editedText } : todo
+        todo.id === id ? { ...todo, text: editedText.trim() } : todo
       )
     );
   }
