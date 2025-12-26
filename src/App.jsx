@@ -53,6 +53,14 @@ function App() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   }
 
+  function editTodoItem(id, editedText) {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, text: editedText } : todo
+      )
+    );
+  }
+
   return (
     <>
       <TodoInput onAdd={addTodoItem} />
@@ -61,6 +69,7 @@ function App() {
         todos={todos}
         onToggle={toggleCompleted}
         onDelete={deleteTodoItem}
+        onEdit={editTodoItem}
       />
     </>
   );
