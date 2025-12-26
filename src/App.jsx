@@ -22,19 +22,23 @@ function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
 
-  function addTodoItem() {
-    const res = prompt('해야 할 일을 입력해주세요');
-    if (res === null) return;
-    const text = res.trim();
-    if (!text) return;
+  function addTodoItem(value) {
+    if (!isValid(value)) return;
 
     const todoItem = {
       id: crypto.randomUUID(),
-      text: text,
+      text: value.trim(),
       completed: false,
     };
 
     setTodos((prev) => [...prev, todoItem]);
+  }
+
+  function isValid(text) {
+    if (text === null) return false;
+    if (!text.trim()) return false;
+
+    return true;
   }
 
   function toggleCompleted(id) {
@@ -51,7 +55,21 @@ function App() {
 
   return (
     <>
-      <TodoAddButton onAdd={addTodoItem} />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault(); //submit 시 새로고침 방지
+          addTodoItem(e.target.todoInput.value);
+          e.target.todoInput.value = '';
+        }}
+      >
+        <input
+          className="todo-add-input"
+          type="text"
+          placeholder="해야할 일을 입력해주세요"
+          name="todoInput"
+        ></input>
+        <button type="submit">+</button>
+      </form>
 
       <TodoList
         todos={todos}
